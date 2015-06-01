@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">WearL2VAB</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="wear_status_connecting">Connecting to your Wear device\u2026</string>
+    <string name="wear_status_connected">Connected to your Wear device</string>
+
+    <string name="balance_fetching">Fetching balance\u2026</string>
+    <string name="balance_value">Balance: %1$s</string>
 </resources>
