@@ -172,7 +172,7 @@ public class MainActivity extends Activity implements ConnectionCallbacks, OnCon
             DataItemBuffer dataItemResults =
                     Wearable.DataApi.getDataItems(mGoogleApiClient, u).await();
 
-            if (dataItemResults.getStatus().isSuccess()) {
+            if (dataItemResults.getStatus().isSuccess() && dataItemResults.getCount() > 0) {
                 DataMapItem dataMapItem = DataMapItem.fromDataItem(dataItemResults.get(0));
                 balance = dataMapItem.getDataMap().getString(BALANCE_KEY);
                 LOGD(TAG, balance);
