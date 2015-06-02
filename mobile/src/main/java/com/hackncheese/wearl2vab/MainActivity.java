@@ -1,10 +1,16 @@
 package com.hackncheese.wearl2vab;
 
 import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.IntentSender;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -44,6 +50,8 @@ public class MainActivity extends Activity implements MessageApi.MessageListener
     private String mPassword;
     private String mSalt;
 
+    private String mBalance;
+
     private TextView mGoogleApiConnectionStatus;
     private TextView mBalanceStatus;
 
@@ -60,6 +68,8 @@ public class MainActivity extends Activity implements MessageApi.MessageListener
         mEmail = getString(R.string.l2vab_login);
         mPassword = getString(R.string.l2vab_password);
         mSalt = getString(R.string.l2vab_salt);
+
+        mBalance = getString(R.string.balance_value_fetching);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Wearable.API)
@@ -171,22 +181,22 @@ public class MainActivity extends Activity implements MessageApi.MessageListener
 
         protected void onPostExecute(String result) {
             LOGD(TAG, result);
-            String balance;
 
             if (result != null && !result.equals("{}")) {
                 try {
                     JSONObject o = new JSONObject(result);
-                    balance = o.getString("balance");
+                    mBalance = o.getString("balance");
                 } catch (JSONException je) {
                     Log.e(TAG, je.getMessage());
-                    balance = "Error";
+                    mBalance = "Error";
                 }
             } else {
-                balance = "Error";
+                mBalance = "Error";
             }
 
-            mBalanceStatus.setText(getString(R.string.balance_value, balance));
-            SetBalanceToWear(balance);
+
+            mBalanceStatus.setText(getString(R.string.balance_value, mBalance));
+            SetBalanceToWear(mBalance);
 
         }
     }
@@ -210,6 +220,43 @@ public class MainActivity extends Activity implements MessageApi.MessageListener
                     }
                 });
     }
+
+    public void onSendNotifClick(View view) {
+        int notificationId = 1;
+        long[] vibrationPattern = {0,500,110,500,110,450,110,200,110,170,40,450,110,200,110,170,40,500};//star wars imperial march
+
+        Intent openFridgeIntent = new Intent(this, OpenTheFridgeService.class);
+        openFridgeIntent.putExtra(OpenTheFridgeService.EXTRA_EMAIL, mEmail);
+        openFridgeIntent.putExtra(OpenTheFridgeService.EXTRA_PASSWORD, mPassword);
+        openFridgeIntent.putExtra(OpenTheFridgeService.EXTRA_SALT, mSalt);
+        PendingIntent openFridgePendingIntent = PendingIntent.getService(this, 0, openFridgeIntent, 0);
+
+        // Create the action
+        NotificationCompat.Action action =
+                new NotificationCompat.Action.Builder(R.mipmap.ic_lock_open_white,
+                        getString(R.string.open_the_fridge), openFridgePendingIntent)
+                        .build();
+
+        // Create a WearableExtender to add functionality for wearables
+        NotificationCompat.WearableExtender wearableExtender = new NotificationCompat.WearableExtender()
+                .setHintHideIcon(true)
+                .setBackground(BitmapFactory.decodeResource(getResources(), R.drawable.l2v_300))
+                .addAction(action);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(getString(R.string.notif_title))
+                .setContentText(getString(R.string.balance_value, mBalance))
+                .extend(wearableExtender)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setVibrate(vibrationPattern);
+
+        // Get an instance of the NotificationManager service
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        // Build the notification and issues it with notification manager.
+        notificationManager.notify(notificationId, notificationBuilder.build());
+    }
+
 
     /**
      * As simple wrapper around Log.d

@@ -7,4 +7,11 @@
 
     <string name="balance_fetching">Fetching balance\u2026</string>
     <string name="balance_value">Balance: %1$s</string>
+    <string name="balance_value_fetching">fetching\u2026</string>
+
+    <string name="notif_button_text">Send notification</string>
+
+    <string name="notif_title">Les 2 Vaches</string>
+
+    <string name="open_the_fridge">Open the fridge</string>
 </resources>

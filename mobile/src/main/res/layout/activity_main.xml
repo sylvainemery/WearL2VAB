@@ -21,4 +21,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/google_api_connection_status" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/notif_button_text"
+        android:id="@+id/notif_button"
+        android:layout_below="@+id/balance_status"
+        android:onClick="onSendNotifClick" />
+
 </RelativeLayout>
