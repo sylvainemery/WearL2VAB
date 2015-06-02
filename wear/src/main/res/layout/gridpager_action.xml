@@ -4,6 +4,6 @@
     android:id="@+id/open_the_fridge"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:src="@mipmap/ic_full_openonphone"
+    android:src="@mipmap/ic_lock_open_white"
     android:text="@string/open_the_fridge"
     android:maxLines="1" />
