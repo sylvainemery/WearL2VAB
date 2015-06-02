@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.IntentSender;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -45,21 +44,17 @@ public class MainActivity extends Activity implements MessageApi.MessageListener
     private String mPassword;
     private String mSalt;
 
-    private TextView mWearConnectionStatus;
+    private TextView mGoogleApiConnectionStatus;
     private TextView mBalanceStatus;
 
     private GoogleApiClient mGoogleApiClient;
     private boolean mResolvingError = false;
-    private boolean mConnectedWear = false;
-
-    private Handler mHandler;
 
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
-        mHandler = new Handler();
         setContentView(R.layout.activity_main);
-        mWearConnectionStatus = (TextView) findViewById(R.id.wear_connection_status);
+        mGoogleApiConnectionStatus = (TextView) findViewById(R.id.google_api_connection_status);
         mBalanceStatus = (TextView) findViewById(R.id.balance_status);
 
         mEmail = getString(R.string.l2vab_login);
@@ -82,16 +77,6 @@ public class MainActivity extends Activity implements MessageApi.MessageListener
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
     protected void onStop() {
         if (!mResolvingError) {
             Wearable.MessageApi.removeListener(mGoogleApiClient, this);
@@ -104,8 +89,7 @@ public class MainActivity extends Activity implements MessageApi.MessageListener
     public void onConnected(Bundle connectionHint) {
         LOGD(TAG, "Google API Client was connected");
         mResolvingError = false;
-        mConnectedWear = true;
-        mWearConnectionStatus.setText(getString(R.string.wear_status_connected));
+        mGoogleApiConnectionStatus.setText(getString(R.string.google_api_status_connected));
         Wearable.MessageApi.addListener(mGoogleApiClient, this);
         // now get the balance
         new GetBalanceTask().execute();
@@ -114,7 +98,7 @@ public class MainActivity extends Activity implements MessageApi.MessageListener
     @Override //ConnectionCallbacks
     public void onConnectionSuspended(int cause) {
         LOGD(TAG, "Connection to Google API client was suspended");
-        mConnectedWear = false;
+        mGoogleApiConnectionStatus.setText(getString(R.string.google_api_status_connecting));
     }
 
     @Override //OnConnectionFailedListener
@@ -133,7 +117,7 @@ public class MainActivity extends Activity implements MessageApi.MessageListener
         } else {
             Log.e(TAG, "Connection to Google API client has failed");
             mResolvingError = false;
-            mConnectedWear = false;
+            mGoogleApiConnectionStatus.setText(getString(R.string.google_api_status_failed));
             Wearable.MessageApi.removeListener(mGoogleApiClient, this);
         }
     }

@@ -9,8 +9,8 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/wear_connection_status"
-        android:text="@string/wear_status_connecting"
+        android:id="@+id/google_api_connection_status"
+        android:text="@string/google_api_status_connecting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -19,6 +19,6 @@
         android:text="@string/balance_fetching"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/wear_connection_status" />
+        android:layout_below="@+id/google_api_connection_status" />
 
 </RelativeLayout>

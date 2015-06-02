@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">WearL2VAB</string>
 
-    <string name="wear_status_connecting">Connecting to your Wear device\u2026</string>
-    <string name="wear_status_connected">Connected to your Wear device</string>
+    <string name="google_api_status_connecting">Connecting to Google API client\u2026</string>
+    <string name="google_api_status_connected">Connected to Google API client</string>
+    <string name="google_api_status_failed">Failed to connect to Google API client</string>
 
     <string name="balance_fetching">Fetching balance\u2026</string>
     <string name="balance_value">Balance: %1$s</string>
