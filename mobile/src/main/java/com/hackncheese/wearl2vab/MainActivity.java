@@ -102,7 +102,7 @@ public class MainActivity extends Activity implements MessageApi.MessageListener
         mGoogleApiConnectionStatus.setText(getString(R.string.google_api_status_connected));
         Wearable.MessageApi.addListener(mGoogleApiClient, this);
         // now get the balance
-        new GetBalanceTask().execute();
+        //new GetBalanceTask().execute();
     }
 
     @Override //ConnectionCallbacks
@@ -225,10 +225,10 @@ public class MainActivity extends Activity implements MessageApi.MessageListener
         int notificationId = 1;
         long[] vibrationPattern = {0,500,110,500,110,450,110,200,110,170,40,450,110,200,110,170,40,500};//star wars imperial march
 
-        Intent openFridgeIntent = new Intent(this, OpenTheFridgeService.class);
-        openFridgeIntent.putExtra(OpenTheFridgeService.EXTRA_EMAIL, mEmail);
-        openFridgeIntent.putExtra(OpenTheFridgeService.EXTRA_PASSWORD, mPassword);
-        openFridgeIntent.putExtra(OpenTheFridgeService.EXTRA_SALT, mSalt);
+        Intent openFridgeIntent = new Intent(this, L2VABApiService.class);
+        openFridgeIntent.putExtra(L2VABApiService.EXTRA_EMAIL, mEmail);
+        openFridgeIntent.putExtra(L2VABApiService.EXTRA_PASSWORD, mPassword);
+        openFridgeIntent.putExtra(L2VABApiService.EXTRA_SALT, mSalt);
         PendingIntent openFridgePendingIntent = PendingIntent.getService(this, 0, openFridgeIntent, 0);
 
         // Create the action
@@ -247,6 +247,7 @@ public class MainActivity extends Activity implements MessageApi.MessageListener
                 .setContentTitle(getString(R.string.notif_title))
                 .setContentText(getString(R.string.balance_value, mBalance))
                 .extend(wearableExtender)
+                .addAction(action)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setVibrate(vibrationPattern);
 
