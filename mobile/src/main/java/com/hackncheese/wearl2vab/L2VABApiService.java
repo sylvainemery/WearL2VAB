@@ -61,7 +61,7 @@ public class L2VABApiService extends IntentService {
 
             final String action = intent.getAction();
             if (ACTION_OPENFRIDGE.equals(action)) {
-                //NetHelper.getDataFromUrl(getString(R.string.url_open_door), headers, "PUT");
+                NetHelper.getDataFromUrl(getString(R.string.url_open_door), headers, "PUT");
                 LOGD(TAG, "Opening the fridge");
             } else if (ACTION_FETCHBALANCE.equals(action)) {
                 String result;
@@ -93,8 +93,8 @@ public class L2VABApiService extends IntentService {
      * As simple wrapper around Log.d
      */
     private static void LOGD(final String tag, String message) {
-        //if (Log.isLoggable(tag, Log.DEBUG)) {
+        if (Log.isLoggable(tag, Log.DEBUG)) {
             Log.d(tag, message);
-        //}
+        }
     }
 }

@@ -46,7 +46,7 @@ public class MobileApplication extends Application implements BootstrapNotifier 
         /*beaconManager.setForegroundScanPeriod(1100);
         beaconManager.setForegroundBetweenScanPeriod(900);*/
         beaconManager.setBackgroundScanPeriod(1100);
-        beaconManager.setBackgroundBetweenScanPeriod(2*60*1000);
+        beaconManager.setBackgroundBetweenScanPeriod(2 * 60 * 1000);
 
         // set iBeacon specs
         beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
@@ -58,7 +58,7 @@ public class MobileApplication extends Application implements BootstrapNotifier 
         // monitor sparingly
         mBackgroundPowerSaver = new BackgroundPowerSaver(this);
 
-        IntentFilter iff= new IntentFilter(L2VABApiService.ACTION_SENDBALANCE);
+        IntentFilter iff = new IntentFilter(L2VABApiService.ACTION_SENDBALANCE);
         LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, iff);
 
     }

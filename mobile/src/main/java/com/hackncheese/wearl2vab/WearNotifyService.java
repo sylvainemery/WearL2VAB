@@ -2,8 +2,8 @@ package com.hackncheese.wearl2vab;
 
 import android.app.IntentService;
 import android.app.PendingIntent;
-import android.content.Intent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -55,7 +55,7 @@ public class WearNotifyService extends IntentService {
     }
 
     private void handleActionSendNotif(String email, String password, String salt, String balance) {
-        long[] vibrationPattern = {0,500};//,110,500,110,450,110,200,110,170,40,450,110,200,110,170,40,500};//star wars imperial march
+        long[] vibrationPattern = {0, 500};//,110,500,110,450,110,200,110,170,40,450,110,200,110,170,40,500};//star wars imperial march
 
         Intent openFridgeIntent = new Intent(this, L2VABApiService.class);
         openFridgeIntent.setAction(L2VABApiService.ACTION_OPENFRIDGE);
