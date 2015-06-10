@@ -8,25 +8,11 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/google_api_connection_status"
-        android:text="@string/google_api_status_connecting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/balance_status"
-        android:text="@string/balance_fetching"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/google_api_connection_status" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/notif_button_text"
         android:id="@+id/notif_button"
-        android:layout_below="@+id/balance_status"
-        android:onClick="onSendNotifClick" />
+        android:onClick="onShowNotifClick" />
 
 </RelativeLayout>

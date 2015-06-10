@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -38,6 +39,8 @@ public class MobileApplication extends Application implements BootstrapNotifier 
 
         mBalance = getString(R.string.balance_value_fetching);
 
+        Resources res = getResources();
+
         mPackageName = getPackageName();
         BeaconManager beaconManager = BeaconManager.getInstanceForApplication(this);
         /*beaconManager.setForegroundScanPeriod(1100);
@@ -49,14 +52,14 @@ public class MobileApplication extends Application implements BootstrapNotifier 
         beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
 
         // monitor for a specific iBeacon UUID/major/minor
-        Region region = new Region(mPackageName, null, null, null);//Identifier.parse("2F234454-CF6D-4A0F-ADF2-F4911BA9FFA6"), null, null);
+        Region region = new Region(mPackageName, Identifier.parse(getString(R.string.beacon_uuid)), Identifier.fromInt(res.getInteger(R.integer.beacon_major)), Identifier.fromInt(res.getInteger(R.integer.beacon_minor)));
         mRegionBootstrap = new RegionBootstrap(this, region);
 
         // monitor sparingly
         mBackgroundPowerSaver = new BackgroundPowerSaver(this);
 
         IntentFilter iff= new IntentFilter(L2VABApiService.ACTION_SENDBALANCE);
-        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, iff); //TODO: find a place to unregister
+        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, iff);
 
     }
 
@@ -66,8 +69,14 @@ public class MobileApplication extends Application implements BootstrapNotifier 
 
     @Override
     public void didEnterRegion(Region region) {
-        Log.d(TAG, "did enter region " + region.getUniqueId());
+        LOGD(TAG, "did enter region " + region.getUniqueId());
         L2VABApiService.startActionFetchBalance(this, mEmail, mPassword, mSalt);
+    }
+
+    @Override
+    public void didExitRegion(Region region) {
+        LOGD(TAG, "did exit region " + region.toString());
+        WearNotifyService.startActionRemoveNotif(this);
     }
 
     private BroadcastReceiver onNotice = new BroadcastReceiver() {
@@ -78,10 +87,12 @@ public class MobileApplication extends Application implements BootstrapNotifier 
         }
     };
 
-    @Override
-    public void didExitRegion(Region region) {
-        Log.d(TAG, "did exit region " + region.toString());
-        WearNotifyService.startActionRemoveNotif(this);
+    /**
+     * As simple wrapper around Log.d
+     */
+    private static void LOGD(final String tag, String message) {
+        if (Log.isLoggable(tag, Log.DEBUG)) {
+            Log.d(tag, message);
+        }
     }
-
 }

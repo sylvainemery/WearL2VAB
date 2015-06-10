@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="beacon_uuid">8492E75F-4FD6-469D-B132-043FE94921D8</string>
+    <integer name="beacon_major">5187</integer>
+    <integer name="beacon_minor">24035</integer>
+</resources>
